@@ -33,5 +33,10 @@ public class Users {
 			inverseJoinColumns = @JoinColumn(name = "role_id")
 			)
 	private Set<Role> roles = new HashSet<>();
+
+	public void setRoles(Set<javax.management.relation.Role> singleton) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

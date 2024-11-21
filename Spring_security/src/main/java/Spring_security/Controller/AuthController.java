@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
+import javax.management.relation.Role;
+
 import org.apache.coyote.http11.Http11InputBuffer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import Spring_security.Entity.Role;
 import Spring_security.Entity.Users;
 import Spring_security.Models.LoginDto;
 import Spring_security.Models.SignUpDto;
@@ -67,17 +68,10 @@ public class AuthController {
 		user.setEnabled(true);
 		user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 		
-	    Optional<javax.management.relation.Role> roleOptional = roleRepository.findByName("USER");
-
-	    if (!roleOptional.isPresent()) {
-	        return new ResponseEntity<>("Role 'USER' not found!", HttpStatus.BAD_REQUEST);
-	    }
-
-	    Role role = roleOptional.get(); // Lấy Role "USER" nếu tồn tại
-	    user.setRoles(Collections.singleton(role)); // Gán Role cho user
-
-	    // Lưu người dùng vào cơ sở dữ liệu
-	    userRepository.save(user);
+		Role roles = roleRepository.findByName("USER").get();
+		user.setRoles(Collections.singleton(roles));
+		
+		userRepository.save(user);
 		
 		return new ResponseEntity<>("Email is already taken!",HttpStatus.OK);
 		

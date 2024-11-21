@@ -24,4 +24,6 @@ public interface UserRepository {
 
     Boolean existsByEmail(String email);
 
+	public void save(Users user);
+
 }
